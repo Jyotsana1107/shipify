@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="/cart.css">
+</head>
+<body>
+    <div class="cart-page">
+        <a href="/" class="back-link"> < Back to shop</a>
+
+        <div class="cart-header">
+            <div>
+                <h1>Welcome to Your Cart</h1>
+                <p>Items you have added.</p>
+            </div>
+            <div class="cart-badge"><%= item.length %> item<%= item.length === 1 ? '' : 's' %></div>
+        </div>
+
+
+
+        <% let total = 0%>
+        <section class="cartItems">
+            <% if (item.length === 0) { %>
+                <div class="empty-cart">Your cart is empty right now.</div>
+            <% } else { %>
+                <% item.forEach(function(item){ %>
+                <div class="cartItem">
+                    <div class="itemInfo">
+                        <h2><%= item.name %></h2>
+                        <p class="price">$<%= item.price %></p>
+                        <p class="quantity">Quantity: <%= item.quantity %></p>
+                        <% total = total + (item.price * item.quantity) %>
+                        <button class="remove-btn" data-id="<%= item.id %>">Remove</button>
+                    </div>
+                </div>
+                <% }) %>
+            <% } %>
+        </section>
+
+
+        <div class="cart-total">
+            <p class="total">Total - $<%= total %></p>
+        </div>
+        <% if (item.length > 0) { %>
+        <div class="cart-actions">
+            <a href="/order" class="order-btn">Order Now</a>
+            <a href="/order-list" class="view-orders-btn">View Orders</a>
+        </div>
+        <% } %>
+    </div>
+
+    <div class="cart-footer">
+        <a href="/" class="continue-shopping">Continue Shopping</a>
+    </div>
+
+    <script src="/cart.js"></script>
+</body>
+</html>

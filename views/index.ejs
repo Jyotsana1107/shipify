@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/shop.webp" type="image/x-icon">
+    <title>Shipify</title>
+    <link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <nav>
+        <div class="logo"> <img src="/shop.webp" alt="Shipify Logo" style="width: 50px; height: auto; margin-right: 20px;"> <span>Shipify</span></div>
+        <div class="nav-right">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#gallery">Products</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <% if (user) { %>
+                    <li><a href="/order-list">Order List</a></li>
+                    <li> <a href="/profile" id="profile">Hi, <%= user.name %></a></li>
+                <% } else { %>
+                    <li><a href="/login" id = "login">Log In</a></li>
+                <% } %>
+            </ul>
+            <div class="cart-icon" id="cartIcon"> 🛒 </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <h1>Welcome to Shipify</h1>
+        <p>Discover unique products that tell your story at unbeatable prices.</p>
+        <a href="#gallery" class="cta-button">Shop Now</a>
+    </section>
+
+    <section id="gallery" class="gallery">
+        <h2 class="section-title">Products</h2>
+        <div class="product-grid">
+            <% products.forEach(product => { %>
+                <div class="product-card">
+                    <img src="<%= product.image %>" alt="<%= product.name %>" image="<%= product.image %>">
+                    <h3 name="<%= product.name %>"><%= product.name %></h3>
+                    <p price="$<%= product.price %>">$<%= product.price %></p>
+                    <button class="view-details" id="<%= product.id %>">View Details</button>
+                </div>
+            <% }); %>
+        </div>
+    </section>
+
+    <section id="about" class="gallery">
+        <h2 class="section-title">Why Shop With Us</h2>
+        <div style="background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 5px 25px rgba(255, 182, 193, 0.3); max-width: 900px; margin: 0 auto;">
+            <p style="font-size: 1.1rem; line-height: 1.8;
+             color: #666; text-align: center;">
+                Shipify is a leading e-commerce platform that empowers businesses to create and manage their online stores with ease. We provide the tools and resources needed to build a successful online presence, from product management to marketing and analytics.
+            </p>
+        </div>
+    </section>
+
+    <section id="contact" class="gallery">
+        <h2 class="section-title">Contact Us</h2>
+        <div style="background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 5px 25px rgba(255, 182, 193, 0.3); max-width: 900px; margin: 0 auto;">
+            <p style="font-size: 1.1rem; line-height: 1.8; color: #666; text-align: center;">
+                We'd love to hear from you! Whether you have questions about our products, need assistance with your order, or just want to share your feedback, feel free to reach out.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Shipify. Every product tells a story. ✨</p>
+    </footer>
+
+    <script src="/index.js"></script>
+
+</body>
+</html>

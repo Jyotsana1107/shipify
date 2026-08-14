@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+    <link rel="stylesheet" href="/order-list.css">
+</head>
+<body>
+    <div class="orders-container">
+        <a href="/" class="back-link"> < Back to shop</a>
+
+        <div class="orders-header">
+            <div>
+                <h1>Your Orders</h1>
+                <p>View and manage your orders</p>
+            </div>
+            <div class="orders-badge"><%= orders.length %> order<%= orders.length === 1 ? '' : 's' %></div>
+        </div>
+
+        <% if (orders.length === 0) { %>
+            <div class="empty-orders">
+                <div class="empty-icon">📦</div>
+                <h3>No Orders Yet</h3>
+                <p>Start shopping to create your first order!</p>
+                <a href="/" class="shop-btn">Continue Shopping</a>
+            </div>
+        <% } else { %>
+            <div class="orders-list">
+                <% orders.forEach(function(order) { %>
+                    <div class="order-card">
+                        <div class="order-header-card">
+                            <div class="order-info">
+                                <h3>Order #<%= order.order_id %></h3>
+                                <p class="order-date"><%= new Date(order.order_date).toLocaleDateString() %></p>
+                            </div>
+                            <div class="order-status <%= order.order_status.toLowerCase() %>">
+                                <%= order.order_status %>
+                            </div>
+                        </div>
+
+                        <div class="order-details-grid">
+                            <div class="detail">
+                                <span class="detail-label">Total Amount</span>
+                                <span class="detail-value amount">$<%= parseFloat(order.order_total).toFixed(2) %></span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-label">Payment Method</span>
+                                <span class="detail-value"><%= order.payment_method %></span>
+                            </div>
+                            <div class="detail">
+                                <span class="detail-label">Delivery Address</span>
+                                <span class="detail-value"><%= order.address %>, <%= order.city %>, <%= order.state %> <%= order.pincode %></span>
+                            </div>
+                        </div>
+
+                        <div class="order-items">
+                            <h4>Items in this order:</h4>
+                            <div class="items-list">
+                                <% if (order.items && order.items.length > 0) { %>
+                                    <% order.items.forEach(function(item) { %>
+                                        <div class="item-row">
+                                            <div class="item-name"><%= item.product_name %></div>
+                                            <div class="item-details">
+                                                <span>Qty: <%= item.quantity %></span>
+                                                <span>Price: $<%= parseFloat(item.price).toFixed(2) %></span>
+                                            </div>
+                                        </div>
+                                    <% }) %>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <div class="cancelOrder" data-id = <%= order.order_id %>> Cancel Order </div>
+                    </div>
+                <% }) %>
+            </div>
+
+            <div class="orders-footer">
+                <a href="/" class="continue-shopping">Continue Shopping</a>
+            </div>
+        <% } %>
+    </div>
+
+    <script src="/order-list.js"></script>
+</body>
+</html>

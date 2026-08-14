@@ -1,0 +1,31 @@
+<head>
+    <title><%= product.name %> | Shopify</title>
+    <link rel="stylesheet" href="/product.css">
+</head>
+
+<body>
+    <main class="product-page">
+        <a href="/" class="back-link">< Back to shop</a>
+
+        <section class="product-card">
+            <img src="<%= product.image %>" alt="<%= product.name %>">
+            <div class="product-info">
+                <h1><%= product.name %></h1>
+                <p class="category">Category: <%= product.category %></p>
+                <p class="description"><strong>Description:</strong> <%= product.description %></p>
+                <p id="price">$<%= product.price %></p>
+                <p class="stock">Stock: <%= product.stock %></p>
+                <div class="quantity-selector">
+                    <label for="quantity">Quantity:</label>
+                    <button id="decreaseQuantity" data-id="<%= product.id %>">-</button>
+                    <input id="quantity" name="quantity" value="1" min="1" max="<%= product.stock %>">
+                    <button id="increaseQuantity" data-id="<%= product.id %>">+</button>
+                </div>
+                <button class="add-to-cart" data-id="<%= product.id %>" action = "/cart">Add to Cart</button>
+            </div>
+        </section>
+        
+        <script src="/product.js"></script>
+        <script src="/cart.js"></script>
+    </main>
+</body>
