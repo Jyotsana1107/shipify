@@ -85,7 +85,10 @@ app.get("/signup", (req, res) => {
   db.query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [name, email, password], (err, results) => {
     if (err) {
       console.log(err);
-      return res.status(500).send("Error adding user");
+      if (err.code === "ER_DUP_ENTRY") {
+        return res.json({message: "This email is already registered. Please log in or use a different email."});
+      }
+      return res.json({message: "Error adding user. Please try again."});
     }
     return res.json({message: "User Succesfully Added"});
   });

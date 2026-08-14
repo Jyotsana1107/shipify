@@ -11,7 +11,7 @@ form.addEventListener("submit", function(event){
         return;
     }
     if (!validPass.test(credentials.password)){
-        alert("Your Password should be atleast 8 charcters long and can have a-z, A-Z, 0-9, and @");
+        alert("Your Password should be atleast 8 characters long and can have a-z, A-Z, 0-9, and @");
         return;
     }
     if (credentials.password !== credentials.confirmpassword){
@@ -32,6 +32,9 @@ form.addEventListener("submit", function(event){
     .then(data=>{
         if (data.message === "User Succesfully Added"){
             window.location.href = "/login";
+        }
+        else if(data.message.includes("email")){
+            alert("Email already registered. Please log in or use a different email.");
         }
         else{
             alert(data.message);
