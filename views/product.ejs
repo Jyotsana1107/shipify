@@ -18,7 +18,7 @@
                 <div class="quantity-selector">
                     <label for="quantity">Quantity:</label>
                     <button id="decreaseQuantity" data-id="<%= product.id %>">-</button>
-                    <input id="quantity" name="quantity" value="1" min="1" max="<%= product.stock %>">
+                    <input type = "number" id="quantity" name="quantity" value="1" min="1" step="1" max="<%= product.stock %>">
                     <button id="increaseQuantity" data-id="<%= product.id %>">+</button>
                 </div>
                 <button class="add-to-cart" data-id="<%= product.id %>" action = "/cart">Add to Cart</button>

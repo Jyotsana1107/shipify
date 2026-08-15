@@ -164,6 +164,13 @@ app.get("/cart", isLoggedIn, (req, res) => {
 .post("/cart/:productId/:quantity", isLoggedIn, (req, res) => {
   const { productId, quantity } = req.params;
   const userId = req.session.user.id;
+
+  const parsedQuantity = Number(quantity);
+  if (!Number.isInteger(parsedQuantity) || parsedQuantity < 1) {
+    return res.status(400).json({
+      message: "Quantity must be a positive whole number"
+    });
+  }
   
   db.query("SELECT price FROM products WHERE id = ?", [productId], (err, product) => {
     if (err) {
@@ -173,9 +180,13 @@ app.get("/cart", isLoggedIn, (req, res) => {
     if (!product || product.length === 0) {
       return res.status(404).json({ message: "Product not found" });
     }
+    if (parsedQuantity > product[0].stock){
+      return res.status(400).json({message: "Quantity exceeds available stock"})
+    }
+
     const price = product[0].price;
     
-    db.query("INSERT INTO cart (user_id, product_id, quantity, price) VALUES (?, ?, ?, ?)", [userId, productId, quantity, price], (err, results) => {
+    db.query("INSERT INTO cart (user_id, product_id, quantity, price) VALUES (?, ?, ?, ?)", [userId, productId, parsedQuantity, price], (err, results) => {
       if (err) {
         console.log(err);
         return res.status(500).json({ message: "Error adding product to cart" });
@@ -245,8 +256,8 @@ app.post("/place-order", isLoggedIn, (req, res) => {
         console.log(err);
         return res.status(500).json({ message: "Error creating order" });
       }
-      const orderId = orderResult.insertId;
 
+      const orderId = orderResult.insertId;
       let itemsInserted = 0;
       cartItems.forEach(item => {
         db.query("INSERT INTO order_list (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)", [orderId, item.product_id, item.quantity, item.price], (err) => {
@@ -262,7 +273,6 @@ app.post("/place-order", isLoggedIn, (req, res) => {
                 console.log(err);
                 return res.status(500).json({ message: "Order placed but failed to clear cart" });
               }
-
               const request = mailjet
               .post('send', { version: 'v3.1' })
               .request({
@@ -301,7 +311,6 @@ app.post("/place-order", isLoggedIn, (req, res) => {
                       <p> ${address}<br> ${city}, ${state} - ${pincode} </p>
                       <p>We will notify you when your order is shipped.</p>
                       `
-  
                   }
                 ]
               });
@@ -385,7 +394,6 @@ app.delete('/order-list', isLoggedIn, (req, res) => {
     });
   });
 });
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
