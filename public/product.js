@@ -6,7 +6,7 @@ let stock = parseInt(quantityInput.getAttribute("max"), 10);
 decreaseBtn.addEventListener('click', function(event) {
     event.preventDefault();
     let currentQuantity = parseInt(quantityInput.value, 10);
-    if (isNaN(currentQuantity) || currentQuantity <= 1) {
+    if (isNaN(currentQuantity) || currentQuantity < 1) {
         alert("Quantity cant be less than 1")
         quantityInput.value = 1;
         return;
